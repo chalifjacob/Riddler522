@@ -1,0 +1,47 @@
+class Word:
+    def __init__(self,word):
+        self.wordn = word
+        self.chars = []
+        for char in word:
+            self.chars.append(char)
+        self.states = []
+
+dta = open('word.list.txt','r')
+words = []
+for word in dta:
+    words.append(Word(word.lower().strip()))
+
+states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida',
+          'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
+          'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska',
+          'Nevada', 'NewHampshire', 'NewJersey', 'NewMexico', 'NewYork', 'NorthCarolina', 'NorthDakota', 'Ohio',
+          'Oklahoma', 'Oregon', 'Pennsylvania', 'RhodeIsland', 'SouthCarolina', 'SouthDakota', 'Tennessee', 'Texas',
+          'Utah', 'Vermont', 'Virginia', 'Washington', 'WestVirginia', 'Wisconsin', 'Wyoming']
+
+for state in range(len(states)):
+    states[state] = states[state].lower().strip()
+    chars = []
+    for char in states[state]:
+        chars.append(char)
+    for word in words:
+        same = False
+        for letter in word.chars:
+            if letter in chars:
+                same = True
+                continue
+        if same is False:
+            word.states.append(states[state])
+
+rankings = []
+for i in range(50):
+    rankings.append([])
+
+for word in words:
+    if len(word.states) == 1:
+        rankings[states.index(word.states[0])].append(word.wordn)
+
+for state in range(len(rankings)):
+    if len(rankings[state]) > 0:
+        print(states[state] + ": " + str(len(rankings[state])) + ", Biggest Word: " +
+              str(len(max(rankings[state]))) + ": " + max(rankings[state]))
+    else: print(states[state] + ": " + str(len(rankings[state])))
